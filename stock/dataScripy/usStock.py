@@ -149,7 +149,7 @@ def _get_stocks(base_url, stock):
 # 保存股票信息至本地
 def save_stocks():
     all_stocks = get_all_stocks()
-    with open("stock.csv", 'w+',encoding='utf-8') as f:
+    with open("../stock.csv", 'w+', encoding='utf-8') as f:
         f.write("股票代码,股票名称,市场,分类,类型\n")
         for stock in all_stocks:
             f.write("{stock[id]},{stock[name]},{stock[category]},{stock[tag]},{stock[type]}\n".format(

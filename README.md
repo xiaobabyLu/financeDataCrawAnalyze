@@ -1,3 +1,3 @@
-shujupaqu
+爬取金融(股票、基金、外汇、、、)数据，暂时只有股票相关数据的爬取...
 
 [investment](https://www.zhihu.com/question/438404653)
