@@ -1,7 +1,7 @@
 import baostock as bs
 import pandas as pd
 import datetime
-import stock
+import finance
 
 '''
 参考文章： http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5
