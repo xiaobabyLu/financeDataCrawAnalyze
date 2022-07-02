@@ -29,6 +29,7 @@ def get_stock_data(text):
 
 
 def main(start=1, end=1):
+    b = []
     for i in range(start, end+1):
         url = 'http://60.push2.eastmoney.com/api/qt/clist/get?cb=jQuery112408744624686429123_1578798932591&pn=' \
               '%d&pz=20&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:0+t:6,m:0+t:13,m:' \
@@ -52,6 +53,10 @@ def main(start=1, end=1):
                 start, max_price, min_price, end, volume = '0', '0', '0', '0', '0'
 
             print(a)
+            b.append(a[0])
+    print(b)
+    print(len(b))
+    return b
 
 if __name__ == '__main__':
-    main(1,1000)
+    main(1,400)
