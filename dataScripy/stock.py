@@ -1,18 +1,33 @@
 import baostock as bs
 import pandas as pd
-import finance
+
+
 
 '''
 参考文章： http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5
 '''
 
-def get_k_line(code,start_date,end_date):
-
+'''
+在调用方法get_k_line 前需要至少调用一次登录
+'''
+def login_in():
     #### 登陆系统 ####
     lg = bs.login()
     # 显示登陆返回信息
-    print('login respond error_code:'+lg.error_code)
-    print('login respond  error_msg:'+lg.error_msg)
+    if(lg.error_code !='0'):
+        print('login respond error_code:'+lg.error_code)
+        print('login respond  error_msg:'+lg.error_msg)
+
+'''
+在调用方法get_k_line 不在使用后需要调用该方法登出
+'''
+def login_out():
+    #### 登出系统 ####
+    bs.logout()
+
+
+def get_k_line(code,start_date,end_date):
+
 
     #### 获取沪深A股历史K线数据 ####
     # 详细指标参数，参见“历史行情指标参数”章节；“分钟线”参数与“日线”参数不同。“分钟线”不包含指数。
@@ -37,9 +52,13 @@ def get_k_line(code,start_date,end_date):
 
     result = pd.DataFrame(data_list, columns=rs.fields)
 
+    return result
 
 
 
-    #### 登出系统 ####
-    bs.logout()
+if __name__ == '__main__':
+    login_in()
 
+    print(get_k_line('sz.399006', '2022-05-02', '2022-07-02'))
+
+    login_out()

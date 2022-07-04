@@ -1,2 +1,2 @@
 from .stock import *
-from stockCode import *
+from .stockCode import *
