@@ -1,4 +1,5 @@
 import dataScripy as ds
+
 import datetime
 
 '''
@@ -12,7 +13,7 @@ if __name__ == '__main__':
     ds.login_in()
 
     today = str(datetime.date.today())
-    thirty_ago =str(datetime.date.today() - datetime.timedelta(30))
+    thirty_ago =str(datetime.date.today() - datetime.timedelta(60))
 
     codes = ds.main(1,400)
     for code_num in codes:
@@ -31,9 +32,28 @@ if __name__ == '__main__':
         if (lenth > 10):
             thirty = (float(lt[lenth][5]) - float(lt[0][5])) / float(lt[0][5])
             ten = (float(lt[lenth][5]) - float(lt[lenth // 2][5])) / float(lt[10][5])
-            if (thirty > 0.25 and ten > 0.1):
-                url = f'http://quote.eastmoney.com/{code_url}.html'
-                print(url)
+            if (thirty > 0.3 and ten > 0.2):
+                lr = ds.get_profit_by_code(code_num).iat[3, 2]
+                ys = ds.get_profit_by_code(code_num).iat[2, 2]
+                if lr == '-' and ys == '-':
+                    lr = 0
+                    ys = 0
+                elif lr == '-'and ys != '-':
+                    lr =0
+                    ys = float(ys)
+                elif lr != '-' and ys =='-':
+                    lr = float(lr)
+                    ys = 0
+                else:
+                    ys = float(ys)
+                    lr = float(lr)
+
+                if(lr >0 and  ys > 0):
+                    print(lr)
+                    print(ys)
+
+                    url = f'http://quote.eastmoney.com/{code_url}.html'
+                    print(url)
 
 #调用登出方法
     ds.login_out()

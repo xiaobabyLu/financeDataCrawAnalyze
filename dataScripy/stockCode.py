@@ -1,6 +1,11 @@
 import requests
 import re
 
+'''
+参考文章：https://zhuanlan.zhihu.com/p/159200115
+'''
+
+
 """获取网页源码"""
 def get_page(url):
     try:
@@ -27,8 +32,9 @@ def get_stock_data(text):
         }
 
 
-
+#开始页码，和结束解码
 def main(start=1, end=1):
+    #将所有的股票代码放入列表中
     b = []
     for i in range(start, end+1):
         url = 'http://60.push2.eastmoney.com/api/qt/clist/get?cb=jQuery112408744624686429123_1578798932591&pn=' \
@@ -39,10 +45,13 @@ def main(start=1, end=1):
         data = get_stock_data(text=content)
 
         for j in data:
+            #定义获取股票代码，名字列表
             a =[]
             number = j.get('number')
+            #加入股票代码
             a.append(number)
             name = j.get('name')
+            #加入股票名字
             a.append(name)
             start = j.get('start')
             max_price = j.get('max')

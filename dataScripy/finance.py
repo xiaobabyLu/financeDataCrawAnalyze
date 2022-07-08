@@ -43,42 +43,154 @@ def get_finance_report():
     browser.quit()
 
 
-def get_search_theche():
+def get_search_theche_url(code):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('headless')
 
     browser = webdriver.Chrome("E:\\software\chromedriver.exe",80,chrome_options)
+    # browser = webdriver.Chrome("E:\\software\chromedriver.exe")
 
 
     browser.get('https://cn.investing.com/equities/yili-company-technical')
 
-    browser.find_elements_by_class_name("searchText")[0].send_keys('300181')
+    browser.find_elements_by_class_name("searchText")[0].send_keys(code)
 
     time.sleep(5)
     # browser.find_elements_by_class_name('row')[0].click()
-    a = browser.find_element_by_css_selector("[class='row js-quote-row-template js-quote-item']")
 
 
+    flag = 0
 
-    time.sleep(5)
-    browser.get(a.get_attribute('href') + '-technical')
+    try:
+        b = browser.find_element_by_css_selector("[class='js-query-no-results noResults']")
+    except Exception as e:
+        flag =1
+
+    if flag ==1:
+        a = browser.find_element_by_css_selector("[class='row js-quote-row-template js-quote-item']")
+        time.sleep(5)
+        browser.get(a.get_attribute('href') + '-technical')
+
+        browser.quit()
+
+        return browser.current_url
+
+    else:
+        print('没有查询到'+code)
+
+        browser.quit()
+
+        return ''
 
 
-#https://cn.investing.com/equities/zhejiang-jolly-pharma-technical
+def get_search_theche_direct_url(code):
+    lst = []
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
 
-    print(browser.current_url)
-    return browser.current_url
+    browser = webdriver.Chrome("E:\\software\chromedriver.exe",80,chrome_options)
+    # browser = webdriver.Chrome("E:\\software\chromedriver.exe")
+
+
+    browser.get('https://cn.investing.com/equities/yili-company-technical')
+
+    browser.find_elements_by_class_name("searchText")[0].send_keys(code)
+
+    time.sleep(2)
+    # browser.find_elements_by_class_name('row')[0].click()
+
+
+    flag = 0
+
+    try:
+        b = browser.find_element_by_css_selector("[class='js-query-no-results noResults']")
+    except Exception as e:
+        flag =1
+
+    if flag ==1:
+        a = browser.find_element_by_css_selector("[class='row js-quote-row-template js-quote-item']")
+
+        browser.get(a.get_attribute('href') + '-technical')
+
+        print(browser.current_url)
+
+        element = browser.find_elements_by_id('curr_table')[2]
+        td_content = element.find_elements_by_tag_name("td")
+
+        for td in td_content:
+            lst.append(td.text)
+
+        browser.quit()
+
+
+        return lst
+
+    else:
+        print('没有查询到'+code)
+
+        browser.quit()
+
+        return lst
+
+def get_table_by_se(url):
+    lst = []
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+
+    browser = webdriver.Chrome("E:\\software\chromedriver.exe",80,chrome_options)
+    browser.get(url)
+    element = browser.find_elements_by_id('curr_table')[2]
+    td_content = element.find_elements_by_tag_name("td")
+
+    for td in td_content:
+        lst.append(td.text)
+
+    browser.quit()
+
+    return lst
+
+
+def get_indict_pd(url):
+    rep = requests.get(url)
+    bsObj = bs(rep.text)
+    tables = bsObj.findAll('table', {'id': 'curr_table'})
+    print(len(tables))
+
+    return pd.read_html(str(tables[2]))[0].iat[6,1].split(':')[3]
+
 
     # browser.quit()
 if __name__ == '__main__':
-    url = get_search_theche()
-    rep = requests.get('https://cn.investing.com/equities/zhejiang-jolly-pharma-technical')
-    bsObj = bs(rep.text)
-    tables = bsObj.findAll('table',{'id':'curr_table'})
-    print(len(tables))
+    lst = []
+    url = get_search_theche_url('002703')
 
-    for table in tables:
-        table = str(table)
-        print(table)
-        tb = pd.read_html(str(table), encoding='utf-8',header=0)[0]
-        print(tb)
+    print(url)
+
+    browser = webdriver.Chrome("E:\\software\chromedriver.exe")
+    browser.get(url)
+    element = browser.find_elements_by_id('curr_table')[2]
+    td_content = element.find_elements_by_tag_name("td")
+
+    for td in td_content:
+        lst.append(td.text)
+    print(len(lst))
+    print(lst)  # 输出表格内容
+
+
+    browser.quit()
+
+
+    # rep = requests.get('https://cn.investing.com/equities/zhejiang-jolly-pharma-technical')
+    # bsObj = bs(rep.text)
+    # tables = bsObj.findAll('table',{'id':'curr_table'})
+    # print(len(tables))
+    #
+    # for table in tables:
+    #     table = str(table)
+    #     print(table)
+    #     tb = pd.read_html(str(table), encoding='utf-8',header=0)[0]
+    #     print(tb)
+    #
+    # print('aaaaaaaaaaaaaa')
+    #
+    # print(pd.read_html(str(tables[2]))[0].iat[6,1].split(':')[3])
