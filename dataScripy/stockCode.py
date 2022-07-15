@@ -14,10 +14,12 @@ def get_page(url):
     except requests.ConnectionError as e:
         print('',e.args)
 
-"""获取股票代码、名称、PE"""
+"""获取股票代码、名称、PE,最高价，最小价，市净率，市盈率"""
+
 def get_stock_data(text):
-    com = re.compile('"f2":(?P<end>.+?),.*?"f6":(?P<volume>.+?),.*?"f12":"(?P<number>.+?)",.*?"f14":"(?P<name>.+?)"'
-                     ',.*?"f15":(?P<max>.+?),.*?"f16":(?P<min>.+?),.*?"f17":(?P<start>.+?),', re.S)
+   # .* ?"f9": (?P < pe >.+?) 匹配市盈率  .*?"f23":(?P<pb>.+?) 匹配市净率 ，注意需要按照f1,f2...这样的顺序
+    com = re.compile('"f2":(?P<end>.+?),.*?"f6":(?P<volume>.+?),.*?"f9":(?P<pe>.+?),.*?"f12":(?P<number>.+?),.*?"f14":(?P<name>.+?)'
+                     ',.*?"f15":(?P<max>.+?),.*?"f16":(?P<min>.+?),.*?"f17":(?P<start>.+?),.*?"f23":(?P<pb>.+?),.*?"f24":(?P<a>.+?)', re.S)
 
     ret = com.finditer(text)
     for i in ret:
@@ -28,12 +30,18 @@ def get_stock_data(text):
             'max': i.group('max'),
             'min': i.group('min'),
             'end': i.group('end'),
+
+            'pe':i.group('pe'),#解析获取市盈率
+            'pb':i.group('pb'),#解析市净率
+
+            'a' :i.group('a'),
             'volume': i.group('volume')
+
         }
 
 
 #开始页码，和结束解码
-def main(start=1, end=1):
+def get_code_pe(start=1, end=1):
     #将所有的股票代码放入列表中
     b = []
     for i in range(start, end+1):
@@ -58,14 +66,19 @@ def main(start=1, end=1):
             min_price = j.get('min')
             end = j.get('end')
             volume = j.get('volume')
+            pe = j.get('pe')
+            #加入市盈率
+            a.append(pe)
+            pb = j.get('pb')
+            #加入市盈率
+            a.append(pb)
             if start == '"-"':
-                start, max_price, min_price, end, volume = '0', '0', '0', '0', '0'
+                start, max_price, min_price, end, volume,pe,pb = '0', '0', '0', '0', '0','0','0'
 
-            print(a)
-            b.append(a[0])
-    print(b)
+            b.append(a)
     print(len(b))
     return b
 
+
 if __name__ == '__main__':
-    main(1,400)
+    get_code_pe(1,400)

@@ -121,6 +121,7 @@ def _get_stocks(base_url, stock):
     for page_num in range(1, max_page_num):
         url = base_url.format(time_id=stock["time_id"], page_num=page_num, page_size=page_size)
         resp = requests.get(url)
+        print(url)
 
         if not resp.ok:
             logging.error("{0}-{1}-{2}请求失败：{3}".format(stock["type"],
@@ -165,7 +166,7 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(stock_code_list)
 
-    print(df )
+    print(df)
 
 
 

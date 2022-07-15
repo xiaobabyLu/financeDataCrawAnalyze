@@ -15,7 +15,7 @@ if __name__ == '__main__':
     today = str(datetime.date.today())
     thirty_ago =str(datetime.date.today() - datetime.timedelta(60))
 
-    codes = ds.main(1,400)
+    codes = ds.get_code_pe(1,400)
     for code_num in codes:
         if(code_num[0] == 6 or code_num[0] == 9):
             code = 'sh.' + code_num

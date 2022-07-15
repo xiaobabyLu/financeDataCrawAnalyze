@@ -3,8 +3,11 @@ from bs4 import BeautifulSoup as bs
 from lxml import etree
 
 
+'''
+参考文章：
+https://zhuanlan.zhihu.com/p/159200115
+'''
 url = 'http://quotes.money.163.com/f10/lrb_688237.html'
-
 # 模仿浏览器的headers
 headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
