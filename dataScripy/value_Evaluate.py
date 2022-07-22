@@ -1,4 +1,5 @@
 import requests
+import requests.utils
 from bs4 import BeautifulSoup as bs
 from tqdm import tqdm
 
@@ -36,17 +37,29 @@ def get_dashi_evaluate(code):
 
 if __name__ == '__main__':
 
+    url = 'https://cn.investing.com/equities/yili-company-consensus-estimates'
+
+    url1 = 'https://cn.investing.com/equities/wangfujing-consensus-estimates'
+    url2 = 'https://cn.investing.com/equities/fujian-torch-electron-tech-consensus-estimates'
+
+
+
+    req = requests.get(url,headers,verify=False)
+    req.encoding = 'utf-8'
+
+    print(req.text)
+
     # print(get_dashi_evaluate('600887'))
 
 
-    code_pes = dataScripy.get_code_pe(1,350)
+    # code_pes = dataScripy.get_code_pe(1,350)
 
-    for codes in tqdm(code_pes):
-        code = codes[0].strip('"')
-
-        try:
-
-            print(get_dashi_evaluate(code))
-        except:
-            print("错误：" + codes[1])
-            continue
+    # for codes in tqdm(code_pes):
+    #     code = codes[0].strip('"')
+    #
+    #     try:
+    #
+    #         print(get_dashi_evaluate(code))
+    #     except:
+    #         print("错误：" + codes[1])
+    #         continue

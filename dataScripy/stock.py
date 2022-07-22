@@ -1,6 +1,6 @@
 import baostock as bs
 import pandas as pd
-
+import datetime
 
 
 '''
@@ -59,6 +59,11 @@ def get_k_line(code,start_date,end_date):
 if __name__ == '__main__':
     login_in()
 
-    print(get_k_line('sz.399006', '2022-05-02', '2022-07-02'))
+    today = str(datetime.date.today())
+    thirty_ago =str(datetime.date.today() - datetime.timedelta(30))
+    one_half_year =str(datetime.date.today() - datetime.timedelta(500))
+    print(one_half_year)
+
+    print(get_k_line('sz.000832', one_half_year, today))
 
     login_out()
