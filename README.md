@@ -8,5 +8,7 @@
 # 涉及参考财经网站
 ## 1.价值大师
 [价值大师](https://www.gurufocus.cn/stock/SHSE:600089/term/margin_dcf)
-  在这个网站中参考其中的 : <big>参数详解</big>
+
+  在这个网站中参考其中的 : __参数详解__
+
 ![img.png](价值大师.png)
