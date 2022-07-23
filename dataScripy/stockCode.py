@@ -79,6 +79,14 @@ def get_code_pe(start=1, end=1):
     print(len(b))
     return b
 
+def get_stock_codes():
+    stock_codes = []
+    lt = get_code_pe(1,380)
+    for i in lt:
+        stock_codes.append(i[0].strip('"'))
+    print(stock_codes)
+    return stock_codes
+
 
 if __name__ == '__main__':
-    get_code_pe(1,400)
+    get_stock_codes()

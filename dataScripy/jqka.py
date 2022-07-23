@@ -1,5 +1,7 @@
+import urllib
 from urllib import request
 import pandas as pd
+import dataScripy as ds
 from bs4 import BeautifulSoup
 import csv
 import time
@@ -26,12 +28,33 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36',
 }
 
+codes = ds.get_stock_codes()
+for code in codes:
+    Download_url = f'http://basic.10jqka.com.cn/api/stock/export.php?export=main&type=report&code={code}'
+    print(Download_url)
+    try:
+        r = requests.get(Download_url,headers = headers,timeout = 400)
+        r.encoding = 'gbk'
+        path = f'.//growth_power/{code}.xlsx'
+        f = open(path, "wb") # 项目路径下新增一个教师.xls文件
+        f.write(r.content)
+    except:
+        print('错误码' + code)
+        continue
+
+f.close()
+
+
+
+
 req = requests.get(url, headers=headers, timeout=15)
-html = req.content
-html_doc=html.decode("gbk","ignore")
-print(html_doc)
+html = req.text
 
 soup = BeautifulSoup(html, features='lxml')
+
+trs = soup.find_all('td')
+print(trs)
+
 
 with open('codeinfo.csv', 'w', encoding='UTF-8', newline='') as f:
     writer = csv.writer(f)
