@@ -4,3 +4,9 @@
 
 [A股代码编码规则](https://baijiahao.baidu.com/s?id=1717456125235134836&searchword=%E6%B7%B1%E5%B8%82%E5%92%8C%E6%B2%AA%E5%B8%82%E8%82%A1%E7%A5%A8%E4%BB%A3%E7%A0%81%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB)
 
+
+# 涉及参考财经网站
+## 1.价值大师
+[价值大师](https://www.gurufocus.cn/stock/SHSE:600089/term/margin_dcf)
+  在这个网站中参考其中的 : <big>参数详解</big>
+![img.png](价值大师.png)
