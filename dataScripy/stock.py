@@ -7,6 +7,12 @@ import datetime
 参考文章： http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5
 '''
 
+#显示所有列
+pd.set_option('display.max_columns', None)
+#不换行，显示所有列
+pd.set_option('display.width', 1000)       # 显示宽度
+pd.set_option('display.max_rows', None)
+
 '''
 在调用方法get_k_line 前需要至少调用一次登录
 '''
@@ -54,6 +60,8 @@ def get_k_line(code,start_date,end_date):
 
     return result
 
+def get_exchange_rate(code):
+    bs.query_history_k_data_plus()
 
 
 if __name__ == '__main__':
@@ -61,9 +69,9 @@ if __name__ == '__main__':
 
     today = str(datetime.date.today())
     thirty_ago =str(datetime.date.today() - datetime.timedelta(30))
-    one_half_year =str(datetime.date.today() - datetime.timedelta(500))
+    one_half_year =str(datetime.date.today() - datetime.timedelta(510))
     print(one_half_year)
 
-    print(get_k_line('sz.000832', one_half_year, today))
+    print(get_k_line('sh.601012', one_half_year, today))
 
     login_out()
