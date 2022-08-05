@@ -1,8 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import dataScripy as ds
+import datetime
 
 ''''
 根据派息记录模拟直线，根据斜率获取股利增长率，对于大多数企业不太适用
+
+求取stock_value的趋势拟合直线的斜率
 '''
 
 
@@ -14,7 +18,8 @@ def compute_cost(w,b,x,y):
         xx=x[i]
         yy=y[i]
         total_cost += (yy-w*xx-b)**2
-    return total_cost/M #一除都是浮点 两个除号是地板除，整型。 如 3 // 4
+    return total_cost/M
+    #一除都是浮点 两个除号是地板除，整型。 如 3 // 4
 
 
 # 先定义一个求均值的函数 问题 求均值是不是可以直接用np.mean（data）来实现？
@@ -52,23 +57,28 @@ def fit(x,y):
     return w, b
 
 if __name__ == '__main__':
-    x = [0.000001,1.0000001,2.0000001,3.0000001,4.0000001,5.0000001,6.0000001,7.0000001,8.0000001]
 
-    y = [5.7,11.4,12.35,13.6,16.5,12.6,8.8,6.2,6.82]
+    ds.login_in()
+
+    today = str(datetime.date.today())
+    thirty_ago =str(datetime.date.today() - datetime.timedelta(60))
+    one_half_year =str(datetime.date.today() - datetime.timedelta(510))
+    print(one_half_year)
+
+    df = ds.get_k_line('sh.601318', '2022-05-30', '2022-06-08')
+    print(df)
+
+    ds.login_out()
+
+    y_str = df['close'].values.tolist()
+
+    y_float = list(map(float,y_str))
+
+    print(len(y_str))
+
+    x = list(range(0,len(y_str)))
 
 
-    w,b =fit(x,y)
+    w,b =fit(x,y_float)
 
     print("w is :", w)
-    print("b is :", b)
-    cost = compute_cost(w, b, x,y)
-    print("cost is :", cost)
-
-    dataMatrix = np.array(x)
-
-    pred_y = w * dataMatrix + b
-
-    plt.plot(x, pred_y, c='r')
-
-    plt.scatter(x, y)
-    plt.show()
