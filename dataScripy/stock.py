@@ -5,6 +5,7 @@ import datetime
 
 '''
 参考文章： http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5
+调用开源接口，对接口进行封装获取不同周期的K线数据
 '''
 
 #显示所有列
@@ -31,20 +32,31 @@ def login_out():
     #### 登出系统 ####
     bs.logout()
 
+'''
+  #### 获取沪深A股历史K线数据 日、周、月 分钟####
+'''
+def get_k_line(code,start_date,end_date,period = 'd'):
 
-def get_k_line(code,start_date,end_date):
-
-
-    #### 获取沪深A股历史K线数据 ####
-    # 详细指标参数，参见“历史行情指标参数”章节；“分钟线”参数与“日线”参数不同。“分钟线”不包含指数。
-    # 分钟线指标：date,time,code,open,high,low,close,volume,amount,adjustflag
-    # 周月线指标：date,code,open,high,low,close,volume,amount,adjustflag,turn,pctChg
-
-
-    rs = bs.query_history_k_data_plus(code,
-        "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
-        start_date=start_date, end_date=end_date,
-        frequency="d", adjustflag="3")
+    if period == 'd':
+        #获取日线 k数据
+        # 周月线指标：date,code,open,high,low,close,volume,amount,adjustflag,turn,pctChg
+        rs = bs.query_history_k_data_plus(code,
+            "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
+            start_date=start_date, end_date=end_date,
+            frequency=period, adjustflag="3")
+    elif period == 'w' or period == 'm':
+        #获取周 or 月 k数据
+      rs = bs.query_history_k_data_plus(code,
+          "date,code,open,high,low,close,volume,amount,adjustflag,turn,pctChg",
+          start_date=start_date, end_date=end_date,
+          frequency=period, adjustflag="3")
+    else:
+        #获取 5,,15，30,60  k线数据
+        # 分钟线指标：date,time,code,open,high,low,close,volume,amount,adjustflag
+        rs = bs.query_history_k_data_plus("sh.600000",
+                                          "date,time,code,open,high,low,close,volume,amount,adjustflag",
+                                          start_date='2017-07-01', end_date='2017-07-31',
+                                          frequency=period, adjustflag="3")
 
     # print('query_history_k_data_plus respond error_code:'+rs.error_code)
     # print('query_history_k_data_plus respond  error_msg:'+rs.error_msg)
