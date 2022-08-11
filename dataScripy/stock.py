@@ -36,6 +36,11 @@ def login_out():
   #### 获取沪深A股历史K线数据 日、周、月 分钟####
 '''
 def get_k_line(code,start_date,end_date,period = 'd'):
+    #code转换为对应的格式
+    if (code[0] == '6' or code[0] == '9'):
+        code = 'sh.' + code
+    else:
+        code = 'sz.' + code
 
     if period == 'd':
         #获取日线 k数据
@@ -84,6 +89,6 @@ if __name__ == '__main__':
     one_half_year =str(datetime.date.today() - datetime.timedelta(510))
     print(one_half_year)
 
-    print(get_k_line('sh.601012', one_half_year, today))
+    print(get_k_line('603366', one_half_year, today))
 
     login_out()

@@ -79,6 +79,10 @@ def get_code_pe(start=1, end=1):
     print(len(b))
     return b
 
+
+'''
+:return: stock`s list
+'''
 def get_stock_codes():
     stock_codes = []
     lt = get_code_pe(1,380)
